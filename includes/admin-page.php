@@ -14,12 +14,12 @@ function cps_render_admin_page()
 
     <div class="wrap cps-admin">
 
-        <h1>🚀 Custom Product Slider</h1>
+        <h1>Custom Product Slider</h1>
         <p class="subtitle">Configure your beautiful WooCommerce product slider with powerful options</p>
 
         <!-- Shortcode -->
         <div class="cps-card" style="margin-bottom: 32px;">
-            <h2>📋 Shortcode</h2>
+            <h2>Shortcode</h2>
             <div class="shortcode-box" onclick="this.select(); document.execCommand('copy');">
                 [custom_product_slider]
             </div>
@@ -44,7 +44,7 @@ function cps_render_admin_page()
                 <div class="cps-grid" style="grid-template-columns: 1fr 1fr; gap: 28px;">
                     <!-- Categories -->
                     <div class="cps-card">
-                        <h2>📂 Categories</h2>
+                        <h2>Categories</h2>
                         <div class="cps-checkbox-grid">
                             <?php foreach ($categories as $cat): ?>
                                 <label>
@@ -58,7 +58,7 @@ function cps_render_admin_page()
 
                     <!-- Product Source -->
                     <div class="cps-card">
-                        <h2>🔍 Product Source</h2>
+                        <h2>Product Source</h2>
                         <label>Show Products From</label>
                         <select name="cps_product_source">
                             <option value="all" <?php selected(get_option('cps_product_source', 'all'), 'all'); ?>>All Products</option>
@@ -94,7 +94,7 @@ function cps_render_admin_page()
             <div id="tab-display" class="cps-tab-content">
                 <div class="cps-grid" style="grid-template-columns: 1fr 1fr; gap: 28px;">
                     <div class="cps-card">
-                        <h2>📏 Slides Per View</h2>
+                        <h2>Slides Per View</h2>
                         <label>Mobile</label>
                         <input type="text" name="cps_slides_mobile" value="<?php echo esc_attr(get_option('cps_slides_mobile', '1.2')); ?>">
 
@@ -113,7 +113,7 @@ function cps_render_admin_page()
                     </div>
 
                     <div class="cps-card">
-                        <h2>🎚️ Slider Behavior</h2>
+                        <h2>Slider Behavior</h2>
                         <?php
                         $toggles = [
                             'Autoplay' => 'cps_autoplay',
@@ -146,7 +146,7 @@ function cps_render_admin_page()
             <div id="tab-navigation" class="cps-tab-content">
                 <div class="cps-grid" style="grid-template-columns: 1fr 1fr; gap: 28px;">
                     <div class="cps-card">
-                        <h2>🧭 Navigation</h2>
+                        <h2>Navigation</h2>
                         <div class="cps-toggle">
                             <label>Show Navigation Arrows</label>
                             <label class="cps-switch">
@@ -178,7 +178,7 @@ function cps_render_admin_page()
                     </div>
 
                     <div class="cps-card">
-                        <h2>🌍 Advanced</h2>
+                        <h2>Advanced</h2>
                         <div class="cps-toggle">
                             <label>RTL (Right to Left)</label>
                             <label class="cps-switch">
@@ -198,15 +198,16 @@ function cps_render_admin_page()
 
             <!-- New Tab 4: Custom CSS -->
             <div id="tab-customcss" class="cps-tab-content">
-                <div class="cps-card">
-                    <h2>🎨 Custom Frontend CSS</h2>
-                    <p style="margin-bottom: 15px; color: #646970;">
-                        Add your custom CSS here to style the slider. This will be added to the frontend.
-                    </p>
-                    <textarea name="cps_custom_css" id="cps_custom_css_editor" style="width:100%; height:400px;"><?php echo esc_textarea($custom_css); ?></textarea>
-                    <p class="cps-help">
-                        Tip: Target classes like <code>.cps-slider</code>, <code>.cps-card</code>, <code>.cps-title</code>, etc.
-                    </p>
+                <div class="cps-card cps-code-box">
+                    <h2>Custom Frontend CSS</h2>
+
+                    <label>Add your custom CSS here</label>
+
+                    <textarea name="cps_custom_css" placeholder=".cps-card { background: red; }"><?php echo esc_textarea(get_option('cps_custom_css')); ?></textarea>
+
+                    <div class="cps-code-tip">
+                        Tip: Use classes like <code>.cps-slider</code>, <code>.cps-card</code>, <code>.cps-title</code>
+                    </div>
                 </div>
             </div>
 
