@@ -7,6 +7,9 @@ function cps_render_admin_page()
         'taxonomy' => 'product_cat',
         'hide_empty' => false,
     ]);
+
+    // Get saved custom CSS
+    $custom_css = get_option('cps_custom_css', '');
 ?>
 
     <div class="wrap cps-admin">
@@ -16,7 +19,7 @@ function cps_render_admin_page()
 
         <!-- Shortcode -->
         <div class="cps-card" style="margin-bottom: 32px;">
-            <h2>Shortcode</h2>
+            <h2>📋 Shortcode</h2>
             <div class="shortcode-box" onclick="this.select(); document.execCommand('copy');">
                 [custom_product_slider]
             </div>
@@ -33,15 +36,15 @@ function cps_render_admin_page()
                 <div class="cps-tab active" data-tab="general">General</div>
                 <div class="cps-tab" data-tab="display">Display</div>
                 <div class="cps-tab" data-tab="navigation">Navigation & Controls</div>
+                <div class="cps-tab" data-tab="customcss">Custom CSS</div>
             </div>
 
             <!-- Tab 1: General -->
             <div id="tab-general" class="cps-tab-content active">
                 <div class="cps-grid" style="grid-template-columns: 1fr 1fr; gap: 28px;">
-
                     <!-- Categories -->
                     <div class="cps-card">
-                        <h2>Categories</h2>
+                        <h2>📂 Categories</h2>
                         <div class="cps-checkbox-grid">
                             <?php foreach ($categories as $cat): ?>
                                 <label>
@@ -51,15 +54,11 @@ function cps_render_admin_page()
                                 </label>
                             <?php endforeach; ?>
                         </div>
-                        <?php if (empty($categories)): ?>
-                            <p style="color:#d63638; font-size:13px;">No product categories found.</p>
-                        <?php endif; ?>
                     </div>
 
                     <!-- Product Source -->
                     <div class="cps-card">
-                        <h2>Product Source</h2>
-
+                        <h2>🔍 Product Source</h2>
                         <label>Show Products From</label>
                         <select name="cps_product_source">
                             <option value="all" <?php selected(get_option('cps_product_source', 'all'), 'all'); ?>>All Products</option>
@@ -88,17 +87,14 @@ function cps_render_admin_page()
                             <option value="ASC" <?php selected(get_option('cps_order'), 'ASC'); ?>>Ascending</option>
                         </select>
                     </div>
-
                 </div>
             </div>
 
             <!-- Tab 2: Display -->
             <div id="tab-display" class="cps-tab-content">
                 <div class="cps-grid" style="grid-template-columns: 1fr 1fr; gap: 28px;">
-
                     <div class="cps-card">
-                        <h2>Slides Per View</h2>
-
+                        <h2>📏 Slides Per View</h2>
                         <label>Mobile</label>
                         <input type="text" name="cps_slides_mobile" value="<?php echo esc_attr(get_option('cps_slides_mobile', '1.2')); ?>">
 
@@ -117,65 +113,40 @@ function cps_render_admin_page()
                     </div>
 
                     <div class="cps-card">
-                        <h2>Slider Behavior</h2>
-
-                        <div class="cps-toggle">
-                            <label>Autoplay</label>
-                            <label class="cps-switch">
-                                <input type="checkbox" name="cps_autoplay" value="1" <?php checked(get_option('cps_autoplay', 1)); ?>>
-                                <span class="cps-slider"></span>
-                            </label>
-                        </div>
+                        <h2>🎚️ Slider Behavior</h2>
+                        <?php
+                        $toggles = [
+                            'Autoplay' => 'cps_autoplay',
+                            'Loop' => 'cps_loop',
+                            'Pause on Hover' => 'cps_pause_hover',
+                            'Center Mode' => 'cps_centered',
+                            'Lazy Loading' => 'cps_lazy_load',
+                        ];
+                        foreach ($toggles as $label => $option) : ?>
+                            <div class="cps-toggle">
+                                <label><?php echo $label; ?></label>
+                                <label class="cps-switch">
+                                    <input type="checkbox" name="<?php echo $option; ?>" value="1"
+                                        <?php checked(get_option($option, 1)); ?>>
+                                    <span class="cps-slider"></span>
+                                </label>
+                            </div>
+                        <?php endforeach; ?>
 
                         <label>Autoplay Delay (ms)</label>
                         <input type="number" name="cps_delay" value="<?php echo esc_attr(get_option('cps_delay', 3000)); ?>">
 
                         <label>Transition Speed (ms)</label>
                         <input type="number" name="cps_speed" value="<?php echo esc_attr(get_option('cps_speed', 600)); ?>">
-
-                        <div class="cps-toggle">
-                            <label>Loop</label>
-                            <label class="cps-switch">
-                                <input type="checkbox" name="cps_loop" value="1" <?php checked(get_option('cps_loop', 1)); ?>>
-                                <span class="cps-slider"></span>
-                            </label>
-                        </div>
-
-                        <div class="cps-toggle">
-                            <label>Pause on Hover</label>
-                            <label class="cps-switch">
-                                <input type="checkbox" name="cps_pause_hover" value="1" <?php checked(get_option('cps_pause_hover', 1)); ?>>
-                                <span class="cps-slider"></span>
-                            </label>
-                        </div>
-
-                        <div class="cps-toggle">
-                            <label>Center Mode</label>
-                            <label class="cps-switch">
-                                <input type="checkbox" name="cps_centered" value="1" <?php checked(get_option('cps_centered', 1)); ?>>
-                                <span class="cps-slider"></span>
-                            </label>
-                        </div>
-
-                        <div class="cps-toggle">
-                            <label>Lazy Loading</label>
-                            <label class="cps-switch">
-                                <input type="checkbox" name="cps_lazy_load" value="1" <?php checked(get_option('cps_lazy_load', 1)); ?>>
-                                <span class="cps-slider"></span>
-                            </label>
-                        </div>
                     </div>
-
                 </div>
             </div>
 
             <!-- Tab 3: Navigation & Controls -->
             <div id="tab-navigation" class="cps-tab-content">
                 <div class="cps-grid" style="grid-template-columns: 1fr 1fr; gap: 28px;">
-
                     <div class="cps-card">
-                        <h2>Navigation</h2>
-
+                        <h2>🧭 Navigation</h2>
                         <div class="cps-toggle">
                             <label>Show Navigation Arrows</label>
                             <label class="cps-switch">
@@ -183,7 +154,6 @@ function cps_render_admin_page()
                                 <span class="cps-slider"></span>
                             </label>
                         </div>
-
                         <div class="cps-toggle">
                             <label>Show Pagination Dots</label>
                             <label class="cps-switch">
@@ -191,7 +161,6 @@ function cps_render_admin_page()
                                 <span class="cps-slider"></span>
                             </label>
                         </div>
-
                         <div class="cps-toggle">
                             <label>Mousewheel Control</label>
                             <label class="cps-switch">
@@ -199,7 +168,6 @@ function cps_render_admin_page()
                                 <span class="cps-slider"></span>
                             </label>
                         </div>
-
                         <div class="cps-toggle">
                             <label>Keyboard Control</label>
                             <label class="cps-switch">
@@ -210,8 +178,7 @@ function cps_render_admin_page()
                     </div>
 
                     <div class="cps-card">
-                        <h2>Advanced</h2>
-
+                        <h2>🌍 Advanced</h2>
                         <div class="cps-toggle">
                             <label>RTL (Right to Left)</label>
                             <label class="cps-switch">
@@ -220,20 +187,32 @@ function cps_render_admin_page()
                             </label>
                         </div>
 
-                        <label>Effect</label>
+                        <label>Transition Effect</label>
                         <select name="cps_effect">
                             <option value="slide" <?php selected(get_option('cps_effect'), 'slide'); ?>>Slide</option>
                             <option value="fade" <?php selected(get_option('cps_effect'), 'fade'); ?>>Fade</option>
                         </select>
                     </div>
+                </div>
+            </div>
 
+            <!-- New Tab 4: Custom CSS -->
+            <div id="tab-customcss" class="cps-tab-content">
+                <div class="cps-card">
+                    <h2>🎨 Custom Frontend CSS</h2>
+                    <p style="margin-bottom: 15px; color: #646970;">
+                        Add your custom CSS here to style the slider. This will be added to the frontend.
+                    </p>
+                    <textarea name="cps_custom_css" id="cps_custom_css_editor" style="width:100%; height:400px;"><?php echo esc_textarea($custom_css); ?></textarea>
+                    <p class="cps-help">
+                        Tip: Target classes like <code>.cps-slider</code>, <code>.cps-card</code>, <code>.cps-title</code>, etc.
+                    </p>
                 </div>
             </div>
 
             <br><br>
             <?php submit_button('Save All Settings', 'primary large'); ?>
         </form>
-
     </div>
 
     <script>
@@ -250,6 +229,20 @@ function cps_render_admin_page()
                     document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
                 });
             });
+
+            // Initialize CodeMirror for Custom CSS
+            if (typeof wp !== 'undefined' && wp.codeEditor) {
+                const editorSettings = wp.codeEditor.defaultSettings ? _.clone(wp.codeEditor.defaultSettings) : {};
+                editorSettings.codemirror = _.extend({}, editorSettings.codemirror, {
+                    mode: 'css',
+                    lineNumbers: true,
+                    theme: 'wordpress',
+                    indentUnit: 4,
+                    tabSize: 4,
+                    autoCloseBrackets: true
+                });
+                wp.codeEditor.initialize(document.getElementById('cps_custom_css_editor'), editorSettings);
+            }
         });
     </script>
 
