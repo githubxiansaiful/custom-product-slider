@@ -3,7 +3,7 @@
 /**
  * Plugin Name: Custom Product Slider
  * Description: WooCommerce center-mode product carousel
- * Version: 1.0
+ * Version: 1.01
  * Author: Xian Saiful
  */
 
