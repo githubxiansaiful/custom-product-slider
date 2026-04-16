@@ -209,3 +209,52 @@ input:checked+.cps-slider:before {
         padding: 24px;
     }
 }
+
+/* Tabs */
+.cps-tabs {
+    display: flex;
+    border-bottom: 2px solid #dcdcde;
+    margin-bottom: 30px;
+    gap: 8px;
+}
+
+.cps-tab {
+    padding: 12px 24px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #50575e;
+    cursor: pointer;
+    border-radius: 8px 8px 0 0;
+    transition: all 0.2s;
+}
+
+.cps-tab.active {
+    background: #fff;
+    border: 1px solid #dcdcde;
+    border-bottom: 3px solid #0073aa;
+    color: #0073aa;
+    font-weight: 600;
+}
+
+.cps-tab-content {
+    display: none;
+}
+
+.cps-tab-content.active {
+    display: block;
+}
+
+/* Select styling */
+.cps-card select {
+    height: 42px;
+    padding: 0 14px;
+    font-size: 14px;
+}
+
+/* Help text */
+.cps-help {
+    font-size: 12.5px;
+    color: #646970;
+    margin-top: 4px;
+    display: block;
+}
