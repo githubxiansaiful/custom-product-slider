@@ -1,16 +1,14 @@
 .cps-slider {
     padding: 80px 0;
-    overflow: hidden;
 }
 
-/* Slide base */
+/* Slide animation */
 .cps-slide {
-    transition: all 0.4s ease;
+    transition: 0.4s;
     opacity: 0.5;
     transform: scale(0.85);
 }
 
-/* Center slide */
 .swiper-slide-active {
     opacity: 1;
     transform: scale(1);
@@ -18,46 +16,63 @@
 
 /* Card */
 .cps-card {
+    position: relative;
     text-align: center;
     padding: 40px 20px;
-    transition: all 0.4s ease;
 }
 
-/* ONLY active gets background */
-.swiper-slide-active .cps-card {
-    background: #f2f2f2;
+/* Animated BG */
+.cps-bg {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: 90%;
+    height: 100%;
+    background: #f5f5f5;
+    transform: translateX(-50%) scale(0);
+    transition: 0.6s ease-in-out;
+    z-index: 1;
 }
 
-/* Image */
-.cps-image img {
-    width: 100%;
-    height: auto;
+.swiper-slide-active .cps-bg {
+    transform: translateX(-50%) scale(1);
 }
 
-/* Title */
-.cps-title {
-    font-size: 18px;
-    letter-spacing: 2px;
+/* Content above */
+.cps-image,
+.cps-info {
+    position: relative;
+    z-index: 2;
+}
+
+/* Info layout */
+.cps-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-top: 20px;
 }
 
-/* Price */
+/* Left */
+.cps-title {
+    font-size: 16px;
+    letter-spacing: 2px;
+}
+
 .cps-price {
     font-size: 14px;
     color: #777;
-    margin: 10px 0 20px;
 }
 
-/* Button */
+/* Right */
 .cps-btn {
     font-size: 12px;
     letter-spacing: 2px;
-    text-decoration: none;
     border-bottom: 1px solid #000;
-    padding-bottom: 3px;
+    text-decoration: none;
 }
 
-/* Navigation arrows (like screenshot) */
+/* Arrows */
 .swiper-button-next,
 .swiper-button-prev {
     color: #000;

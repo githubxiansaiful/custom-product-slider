@@ -5,14 +5,14 @@ document.addEventListener("DOMContentLoaded", function () {
         loop: true,
         spaceBetween: 0,
 
-        slidesPerView: 1.2, // mobile
+        slidesPerView: 1.2,
 
         breakpoints: {
             768: {
                 slidesPerView: 1.8
             },
             1024: {
-                slidesPerView: 2.4 // gives ~40% side visibility
+                slidesPerView: 2.4
             }
         },
 
