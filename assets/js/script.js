@@ -1,30 +1,46 @@
 document.addEventListener("DOMContentLoaded", function () {
 
-    new Swiper('.cps-slider', {
-        centeredSlides: true,
-        loop: true,
-        spaceBetween: 0,
+    const swiper = new Swiper('.cps-slider', {
 
-        slidesPerView: 1.2,
+        loop: cps_settings.loop == 1,
+        centeredSlides: cps_settings.centered == 1,
+
+        slidesPerView: parseFloat(cps_settings.slides_mobile),
+        spaceBetween: parseInt(cps_settings.space_between),
 
         breakpoints: {
             768: {
-                slidesPerView: 1.8
+                slidesPerView: parseFloat(cps_settings.slides_tablet)
             },
             1024: {
-                slidesPerView: 2.4
+                slidesPerView: parseFloat(cps_settings.slides_desktop)
             }
         },
 
-        navigation: cps_settings.arrows ? {
+        speed: parseInt(cps_settings.speed),
+        effect: cps_settings.effect,
+
+        autoplay: cps_settings.autoplay == 1 ? {
+            delay: parseInt(cps_settings.delay),
+            disableOnInteraction: false,
+        } : false,
+
+        navigation: cps_settings.arrows == 1 ? {
             nextEl: '.swiper-button-next',
             prevEl: '.swiper-button-prev',
         } : false,
 
-        pagination: cps_settings.dots ? {
+        pagination: cps_settings.dots == 1 ? {
             el: '.swiper-pagination',
             clickable: true,
         } : false,
     });
+
+    if (cps_settings.pause_hover == 1 && cps_settings.autoplay == 1) {
+        const el = document.querySelector('.cps-slider');
+
+        el.addEventListener('mouseenter', () => swiper.autoplay.stop());
+        el.addEventListener('mouseleave', () => swiper.autoplay.start());
+    }
 
 });

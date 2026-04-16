@@ -3,7 +3,7 @@
 /**
  * Plugin Name: Custom Product Slider
  * Description: WooCommerce center-mode product carousel
- * Version: 1.3
+ * Version: 2.0
  * Author: Xian Saiful
  */
 
@@ -17,14 +17,11 @@ class CPS_Product_Slider
         add_action('wp_enqueue_scripts', [$this, 'enqueue_assets']);
         add_shortcode('custom_product_slider', [$this, 'render_slider']);
 
-        // Admin
         add_action('admin_menu', [$this, 'admin_menu']);
         add_action('admin_init', [$this, 'register_settings']);
 
-        // Settings link in plugins page
         add_filter('plugin_action_links_' . plugin_basename(__FILE__), [$this, 'settings_link']);
 
-        // Include admin file
         require_once plugin_dir_path(__FILE__) . 'includes/admin-page.php';
     }
 
@@ -40,6 +37,21 @@ class CPS_Product_Slider
         wp_localize_script('cps-script', 'cps_settings', [
             'arrows' => get_option('cps_arrows', 1),
             'dots'   => get_option('cps_dots', 1),
+
+            'autoplay' => get_option('cps_autoplay', 1),
+            'delay'    => get_option('cps_delay', 3000),
+            'speed'    => get_option('cps_speed', 600),
+            'loop'     => get_option('cps_loop', 1),
+
+            'pause_hover' => get_option('cps_pause_hover', 1),
+            'centered'    => get_option('cps_centered', 1),
+
+            'slides_mobile'  => get_option('cps_slides_mobile', 1.2),
+            'slides_tablet'  => get_option('cps_slides_tablet', 1.8),
+            'slides_desktop' => get_option('cps_slides_desktop', 2.4),
+
+            'space_between' => get_option('cps_space_between', 0),
+            'effect' => get_option('cps_effect', 'slide'),
         ]);
     }
 
@@ -55,19 +67,16 @@ class CPS_Product_Slider
         ];
 
         if (!empty($categories)) {
-            $args['tax_query'] = [
-                [
-                    'taxonomy' => 'product_cat',
-                    'field' => 'term_id',
-                    'terms' => $categories,
-                ]
-            ];
+            $args['tax_query'] = [[
+                'taxonomy' => 'product_cat',
+                'field' => 'term_id',
+                'terms' => $categories,
+            ]];
         }
 
         $query = new WP_Query($args);
 
-        ob_start();
-?>
+        ob_start(); ?>
 
         <div class="cps-slider swiper">
             <div class="swiper-wrapper">
@@ -78,29 +87,24 @@ class CPS_Product_Slider
                     <div class="swiper-slide cps-slide">
                         <div class="cps-card">
 
-                            <!-- Animated Background -->
                             <div class="cps-bg"></div>
 
                             <div class="cps-image">
                                 <?php
-                                $image_id = get_post_thumbnail_id(get_the_ID());
-                                $image_url = wp_get_attachment_image_url($image_id, 'full');
+                                $img = wp_get_attachment_image_url(get_post_thumbnail_id(), 'large');
                                 ?>
-
-                                <img src="<?php echo esc_url($image_url); ?>" alt="<?php the_title(); ?>">
+                                <img src="<?php echo esc_url($img); ?>">
                             </div>
 
                             <div class="cps-info">
-                                <div class="cps-info-left">
+                                <div>
                                     <h3 class="cps-title"><?php the_title(); ?></h3>
                                     <div class="cps-price"><?php echo $product->get_price_html(); ?></div>
                                 </div>
 
-                                <div class="cps-info-right">
-                                    <a href="<?php the_permalink(); ?>" class="cps-btn">
-                                        DISCOVER MORE
-                                    </a>
-                                </div>
+                                <a href="<?php the_permalink(); ?>" class="cps-btn">
+                                    DISCOVER MORE
+                                </a>
                             </div>
 
                         </div>
@@ -116,34 +120,41 @@ class CPS_Product_Slider
             <div class="swiper-button-next"></div>
         </div>
 
-<?php
-        return ob_get_clean();
+<?php return ob_get_clean();
     }
 
     public function admin_menu()
     {
-        add_menu_page(
-            'Product Slider',
-            'Product Slider',
-            'manage_options',
-            'cps-slider',
-            'cps_render_admin_page',
-            'dashicons-images-alt2'
-        );
+        add_menu_page('Product Slider', 'Product Slider', 'manage_options', 'cps-slider', 'cps_render_admin_page');
     }
 
     public function register_settings()
     {
-        register_setting('cps_settings_group', 'cps_categories');
-        register_setting('cps_settings_group', 'cps_arrows');
-        register_setting('cps_settings_group', 'cps_dots');
+        $fields = [
+            'cps_categories',
+            'cps_arrows',
+            'cps_dots',
+            'cps_autoplay',
+            'cps_delay',
+            'cps_speed',
+            'cps_loop',
+            'cps_pause_hover',
+            'cps_centered',
+            'cps_slides_mobile',
+            'cps_slides_tablet',
+            'cps_slides_desktop',
+            'cps_space_between',
+            'cps_effect'
+        ];
+
+        foreach ($fields as $field) {
+            register_setting('cps_settings_group', $field);
+        }
     }
 
-    // 🔥 Settings link in plugin list
     public function settings_link($links)
     {
-        $settings_link = '<a href="admin.php?page=cps-slider">Settings</a>';
-        array_unshift($links, $settings_link);
+        array_unshift($links, '<a href="admin.php?page=cps-slider">Settings</a>');
         return $links;
     }
 }
