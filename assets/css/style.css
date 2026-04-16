@@ -1,0 +1,64 @@
+.cps-slider {
+    padding: 80px 0;
+    overflow: hidden;
+}
+
+/* Slide base */
+.cps-slide {
+    transition: all 0.4s ease;
+    opacity: 0.5;
+    transform: scale(0.85);
+}
+
+/* Center slide */
+.swiper-slide-active {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Card */
+.cps-card {
+    text-align: center;
+    padding: 40px 20px;
+    transition: all 0.4s ease;
+}
+
+/* ONLY active gets background */
+.swiper-slide-active .cps-card {
+    background: #f2f2f2;
+}
+
+/* Image */
+.cps-image img {
+    width: 100%;
+    height: auto;
+}
+
+/* Title */
+.cps-title {
+    font-size: 18px;
+    letter-spacing: 2px;
+    margin-top: 20px;
+}
+
+/* Price */
+.cps-price {
+    font-size: 14px;
+    color: #777;
+    margin: 10px 0 20px;
+}
+
+/* Button */
+.cps-btn {
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-decoration: none;
+    border-bottom: 1px solid #000;
+    padding-bottom: 3px;
+}
+
+/* Navigation arrows (like screenshot) */
+.swiper-button-next,
+.swiper-button-prev {
+    color: #000;
+}
