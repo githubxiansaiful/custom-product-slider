@@ -1,43 +1,100 @@
-/* Wrapper */
+/* Page */
 .cps-admin {
-    max-width: 1100px;
+    max-width: 1200px;
+    margin-top: 20px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* Title */
+.cps-admin h1 {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 20px;
 }
 
 /* Grid Layout */
 .cps-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
 }
 
-/* Card UI */
+/* Cards */
 .cps-card {
-    background: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 24px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    transition: 0.3s ease;
+}
+
+.cps-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+/* Headings */
+.cps-card h2 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 16px;
+}
+
+/* Labels */
+.cps-card label {
+    font-size: 13px;
+    color: #555;
+    display: block;
+    margin-bottom: 6px;
 }
 
 /* Inputs */
-.cps-card input,
+.cps-card input[type="text"],
+.cps-card input[type="number"],
 .cps-card select {
     width: 100%;
-    margin-bottom: 10px;
+    height: 38px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    padding: 0 10px;
+    font-size: 13px;
+    transition: 0.2s;
 }
 
-/* Categories grid */
+.cps-card input:focus,
+.cps-card select:focus {
+    border-color: #0073aa;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(0, 115, 170, 0.15);
+}
+
+/* Checkbox grid */
 .cps-checkbox-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 5px;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+/* Checkbox label fix */
+.cps-checkbox-grid label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+}
+
+/* Fix checkbox alignment */
+.cps-checkbox-grid input[type="checkbox"] {
+    width: auto;
 }
 
 /* Toggle Switch */
 .cps-switch {
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin-bottom: 10px;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    font-size: 14px;
 }
 
 .cps-switch input {
@@ -45,30 +102,57 @@
 }
 
 .cps-switch span {
-    width: 40px;
-    height: 20px;
-    background: #ccc;
+    width: 42px;
+    height: 22px;
+    background: #ddd;
     border-radius: 20px;
     position: relative;
-    display: inline-block;
+    transition: 0.3s;
 }
 
 .cps-switch span:before {
     content: '';
-    width: 16px;
-    height: 16px;
+    width: 18px;
+    height: 18px;
     background: #fff;
     position: absolute;
     top: 2px;
     left: 2px;
     border-radius: 50%;
-    transition: .3s;
+    transition: 0.3s;
 }
 
+/* Active */
 .cps-switch input:checked+span {
     background: #0073aa;
 }
 
 .cps-switch input:checked+span:before {
     transform: translateX(20px);
+}
+
+/* Shortcode box */
+.cps-card input[readonly] {
+    background: #f9f9f9;
+    cursor: pointer;
+}
+
+/* Save button */
+.wrap .button-primary {
+    background: #0073aa;
+    border-radius: 6px;
+    padding: 8px 18px;
+    font-size: 14px;
+    border: none;
+}
+
+.wrap .button-primary:hover {
+    background: #005f8d;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .cps-grid {
+        grid-template-columns: 1fr;
+    }
 }

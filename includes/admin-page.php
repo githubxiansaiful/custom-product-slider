@@ -43,7 +43,11 @@ function cps_render_admin_page()
                 <div class="cps-card">
                     <h2>Slider Options</h2>
 
-                    <label><input type="checkbox" name="cps_autoplay" value="1" <?php checked(get_option('cps_autoplay', 1)); ?>> Autoplay</label>
+                    <label class="cps-switch">
+                        <span>Autoplay</span>
+                        <input type="checkbox" name="cps_autoplay" value="1" <?php checked(get_option('cps_autoplay', 1)); ?>>
+                        <span></span>
+                    </label>
 
                     <label>Delay</label>
                     <input type="number" name="cps_delay" value="<?php echo esc_attr(get_option('cps_delay', 3000)); ?>">
