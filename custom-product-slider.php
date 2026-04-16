@@ -3,7 +3,7 @@
 /**
  * Plugin Name: Custom Product Slider
  * Description: WooCommerce center-mode product carousel
- * Version: 2.0
+ * Version: 2.2
  * Author: Xian Saiful
  */
 
@@ -14,26 +14,59 @@ class CPS_Product_Slider
 
     public function __construct()
     {
+
+        // Frontend
         add_action('wp_enqueue_scripts', [$this, 'enqueue_assets']);
         add_shortcode('custom_product_slider', [$this, 'render_slider']);
 
+        // Admin
         add_action('admin_menu', [$this, 'admin_menu']);
         add_action('admin_init', [$this, 'register_settings']);
+        add_action('admin_enqueue_scripts', [$this, 'admin_assets']);
 
+        // Plugin page link
         add_filter('plugin_action_links_' . plugin_basename(__FILE__), [$this, 'settings_link']);
 
+        // Include admin page
         require_once plugin_dir_path(__FILE__) . 'includes/admin-page.php';
     }
 
+    /**
+     * FRONTEND ASSETS
+     */
     public function enqueue_assets()
     {
-        wp_enqueue_style('cps-style', plugin_dir_url(__FILE__) . 'assets/css/style.css');
 
-        wp_enqueue_style('swiper-css', 'https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css');
-        wp_enqueue_script('swiper-js', 'https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js', [], null, true);
+        // CSS
+        wp_enqueue_style(
+            'cps-style',
+            plugin_dir_url(__FILE__) . 'assets/css/style.css'
+        );
 
-        wp_enqueue_script('cps-script', plugin_dir_url(__FILE__) . 'assets/js/script.js', ['swiper-js'], null, true);
+        // Swiper
+        wp_enqueue_style(
+            'swiper-css',
+            'https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css'
+        );
 
+        wp_enqueue_script(
+            'swiper-js',
+            'https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js',
+            [],
+            null,
+            true
+        );
+
+        // Custom JS
+        wp_enqueue_script(
+            'cps-script',
+            plugin_dir_url(__FILE__) . 'assets/js/script.js',
+            ['swiper-js'],
+            null,
+            true
+        );
+
+        // Pass settings to JS
         wp_localize_script('cps-script', 'cps_settings', [
             'arrows' => get_option('cps_arrows', 1),
             'dots'   => get_option('cps_dots', 1),
@@ -55,8 +88,12 @@ class CPS_Product_Slider
         ]);
     }
 
+    /**
+     * RENDER SLIDER
+     */
     public function render_slider()
     {
+
         if (!class_exists('WooCommerce')) return;
 
         $categories = get_option('cps_categories', []);
@@ -87,15 +124,18 @@ class CPS_Product_Slider
                     <div class="swiper-slide cps-slide">
                         <div class="cps-card">
 
+                            <!-- Animated Background -->
                             <div class="cps-bg"></div>
 
+                            <!-- Image -->
                             <div class="cps-image">
                                 <?php
                                 $img = wp_get_attachment_image_url(get_post_thumbnail_id(), 'large');
                                 ?>
-                                <img src="<?php echo esc_url($img); ?>">
+                                <img src="<?php echo esc_url($img); ?>" alt="<?php the_title(); ?>">
                             </div>
 
+                            <!-- Info -->
                             <div class="cps-info">
                                 <div>
                                     <h3 class="cps-title"><?php the_title(); ?></h3>
@@ -115,6 +155,7 @@ class CPS_Product_Slider
 
             </div>
 
+            <!-- Controls -->
             <div class="swiper-pagination"></div>
             <div class="swiper-button-prev"></div>
             <div class="swiper-button-next"></div>
@@ -123,26 +164,44 @@ class CPS_Product_Slider
 <?php return ob_get_clean();
     }
 
+    /**
+     * ADMIN MENU
+     */
     public function admin_menu()
     {
-        add_menu_page('Product Slider', 'Product Slider', 'manage_options', 'cps-slider', 'cps_render_admin_page');
+        add_menu_page(
+            'Product Slider',
+            'Product Slider',
+            'manage_options',
+            'cps-slider',
+            'cps_render_admin_page',
+            'dashicons-images-alt2'
+        );
     }
 
+    /**
+     * REGISTER SETTINGS
+     */
     public function register_settings()
     {
+
         $fields = [
             'cps_categories',
             'cps_arrows',
             'cps_dots',
+
             'cps_autoplay',
             'cps_delay',
             'cps_speed',
             'cps_loop',
+
             'cps_pause_hover',
             'cps_centered',
+
             'cps_slides_mobile',
             'cps_slides_tablet',
             'cps_slides_desktop',
+
             'cps_space_between',
             'cps_effect'
         ];
@@ -152,9 +211,29 @@ class CPS_Product_Slider
         }
     }
 
+    /**
+     * ADMIN CSS (ONLY LOAD ON PLUGIN PAGE)
+     */
+    public function admin_assets($hook)
+    {
+
+        if ($hook !== 'toplevel_page_cps-slider') {
+            return;
+        }
+
+        wp_enqueue_style(
+            'cps-admin-style',
+            plugin_dir_url(__FILE__) . 'assets/css/admin.css'
+        );
+    }
+
+    /**
+     * SETTINGS LINK IN PLUGINS PAGE
+     */
     public function settings_link($links)
     {
-        array_unshift($links, '<a href="admin.php?page=cps-slider">Settings</a>');
+        $settings_link = '<a href="admin.php?page=cps-slider">Settings</a>';
+        array_unshift($links, $settings_link);
         return $links;
     }
 }
