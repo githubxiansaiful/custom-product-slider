@@ -3,7 +3,7 @@
 /**
  * Plugin Name: Custom Product Slider
  * Description: WooCommerce center-mode product carousel
- * Version: 1.2
+ * Version: 1.3
  * Author: Xian Saiful
  */
 
@@ -82,7 +82,12 @@ class CPS_Product_Slider
                             <div class="cps-bg"></div>
 
                             <div class="cps-image">
-                                <?php echo woocommerce_get_product_thumbnail(); ?>
+                                <?php
+                                $image_id = get_post_thumbnail_id(get_the_ID());
+                                $image_url = wp_get_attachment_image_url($image_id, 'full');
+                                ?>
+
+                                <img src="<?php echo esc_url($image_url); ?>" alt="<?php the_title(); ?>">
                             </div>
 
                             <div class="cps-info">
