@@ -1,25 +1,17 @@
 document.addEventListener("DOMContentLoaded", function () {
-
-    const settings = cps_settings || {}; // fallback if object not passed
+    const settings = cps_settings || {};
 
     const swiperEl = document.querySelector('.cps-slider');
-
-    if (!swiperEl) {
-        console.warn('Custom Product Slider: .cps-slider element not found.');
-        return;
-    }
+    if (!swiperEl) return;
 
     const swiper = new Swiper(swiperEl, {
-
-        // Core Settings
         loop: settings.loop == 1,
         centeredSlides: settings.centered == 1,
         effect: settings.effect || 'slide',
 
-        // Slides Per View + Responsive
         slidesPerView: parseFloat(settings.slides_mobile || 1.2),
         spaceBetween: parseInt(settings.space_between || 20),
-        slidesPerGroup: parseInt(settings.slides_to_scroll || 1),   // ← New: How many slides move at once
+        slidesPerGroup: parseInt(settings.slides_to_scroll || 1),
 
         breakpoints: {
             768: {
@@ -32,16 +24,14 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         },
 
-        // Speed & Autoplay
         speed: parseInt(settings.speed || 600),
 
         autoplay: (settings.autoplay == 1) ? {
             delay: parseInt(settings.delay || 3000),
             disableOnInteraction: false,
-            pauseOnMouseEnter: true   // Built-in Swiper option (better than manual)
+            pauseOnMouseEnter: true
         } : false,
 
-        // Navigation & Pagination
         navigation: (settings.arrows == 1) ? {
             nextEl: '.swiper-button-next',
             prevEl: '.swiper-button-prev',
@@ -52,45 +42,18 @@ document.addEventListener("DOMContentLoaded", function () {
             clickable: true,
         } : false,
 
-        // Advanced Controls
-        mousewheel: settings.mousewheel == 1 ? {
-            enabled: true,
-            sensitivity: 1.2
-        } : false,
-
-        keyboard: settings.keyboard == 1 ? {
-            enabled: true,
-            onlyInViewport: true
-        } : false,
-
-        // Lazy Loading
-        lazy: settings.lazy_load == 1 ? {
-            loadPrevNext: true,        // Preload nearby slides
-            loadPrevNextAmount: 2
-        } : false,
-
-        // RTL Support
+        mousewheel: settings.mousewheel == 1,
+        keyboard: settings.keyboard == 1,
+        lazy: settings.lazy_load == 1 ? { loadPrevNext: true } : false,
         rtl: settings.rtl == 1,
 
-        // Other useful defaults
         watchOverflow: true,
         grabCursor: true
     });
 
-    // Fallback manual pause on hover (in case autoplay is enabled but built-in doesn't work)
+    // Manual pause on hover fallback
     if (settings.pause_hover == 1 && settings.autoplay == 1) {
-        swiperEl.addEventListener('mouseenter', () => {
-            if (swiper.autoplay) swiper.autoplay.stop();
-        });
-
-        swiperEl.addEventListener('mouseleave', () => {
-            if (swiper.autoplay) swiper.autoplay.start();
-        });
+        swiperEl.addEventListener('mouseenter', () => swiper.autoplay?.stop());
+        swiperEl.addEventListener('mouseleave', () => swiper.autoplay?.start());
     }
-
-    // Optional: Re-init on window resize for better responsiveness
-    window.addEventListener('resize', () => {
-        swiper.update();
-    });
-
 });
