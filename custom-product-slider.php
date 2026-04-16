@@ -3,7 +3,7 @@
 /**
  * Plugin Name: Custom Product Slider
  * Description: WooCommerce center-mode product carousel
- * Version: 2.5
+ * Version: 2.6
  * Author: Xian Saiful
  */
 
@@ -156,9 +156,9 @@ class CPS_Product_Slider
             </div>
 
             <!-- Controls -->
-            <div class="swiper-pagination"></div>
             <div class="swiper-button-prev"></div>
             <div class="swiper-button-next"></div>
+            <div class="swiper-pagination"></div>
         </div>
 
 <?php return ob_get_clean();
